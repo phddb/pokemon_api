@@ -72,8 +72,15 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
              "Incorrect value in response body: \"#{view_key} (#{resp[view_key]})\" doesn't match fixture value \"#{model_key}: (#{@pokemon[model_key]})\"."
     end
 
-    # get '/pokemons/0'
-    # assert_response :not_found, "Doesn't return 404 Not Found for invalid id"
+    # The test environment should raise a RecordNotFound exception here. 
+    # In the development and production environments this exception will be 
+    # caught and converted to a 404 response
+    assert_raise(ActiveRecord::RecordNotFound, "Doesn't return 404 Not Found for invalid id"
+) do
+      get '/pokemons/0'
+      assert_response :not_found
+    end
+
   end
 
   test "should send 304 not modified if index response hasn't changed" do
