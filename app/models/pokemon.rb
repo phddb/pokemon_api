@@ -3,20 +3,22 @@
 class Pokemon < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
-  validates :hp,      numericality: { only_integer: true, in: 1..255 }
-  validates :attack,  numericality: { only_integer: true, in: 1..255 }
-  validates :defense, numericality: { only_integer: true, in: 1..255 }
-  validates :sp_atk,  numericality: { only_integer: true, in: 1..255 }
-  validates :sp_def,  numericality: { only_integer: true, in: 1..255 }
-  validates :speed,   numericality: { only_integer: true, in: 1..255 }
+  validates :hp,        presence: true, numericality: { only_integer: true, in: 1..255 }
+  validates :attack,    presence: true, numericality: { only_integer: true, in: 1..255 }
+  validates :defense,   presence: true, numericality: { only_integer: true, in: 1..255 }
+  validates :sp_atk,    presence: true, numericality: { only_integer: true, in: 1..255 }
+  validates :sp_def,    presence: true, numericality: { only_integer: true, in: 1..255 }
+  validates :speed,     presence: true, numericality: { only_integer: true, in: 1..255 }
 
-  validates :generation, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :legendary, presence: true, inclusion: { in: [true, false] }
+  validates :generation,presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
-  validates :legendary, inclusion: { in: [true, false] }
   validates :types,
+            presence: true,
             inclusion: { in: %w[Grass Poison Fire Flying Dragon Water Bug Normal Electric
                                 Ground Fairy Fighting Psychic Rock Steel Ice Ghost Dark] },
             length: 1..2
+
   validate :uniqueness_of_types
 
   # types is an array of strings. It will be serialized to YAML by default
