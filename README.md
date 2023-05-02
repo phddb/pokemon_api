@@ -41,7 +41,7 @@ rake db:create db:migrate db:seed
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
 > | `200`         | `OK`                     | Array of json-encoded pokemons plus pagination metadata  |  `{"meta":{"current_page":1,"total_pages":32},"data":[{"Name":"Bulbasaur","Types":["Grass","Poison"],"Total":318,...`  |
-> | `400`         | `Bad Request`            |                                                    |         |                                   
+                       
 
 ##### Example cURL
 
@@ -69,7 +69,7 @@ rake db:create db:migrate db:seed
 > | `speed`           |  required | body                 | int (1-255)    | Speed  |
 > | `generation`      |  required | body                 | int            | Generation  |
 > | `legendary`       |  required | body                 | boolean        | Legendary  |
-> | `types`           |  required | body                 | array of 0-2 unique strings | Types associated with this Pokemon. Must be valid pokemon types.(*)  |
+> | `types`           |  required | body                 | array of 1-2 unique strings | Types associated with this Pokemon. Must be valid pokemon types.(*)  |
  (*) Valid types: Grass, Poison, Fire, Flying, Dragon, Water, Bug, Normal, Electric, Ground, Fairy, Fighting, Psychic, Rock, Steel, Ice, Ghost, Dark.
 
 
@@ -79,7 +79,7 @@ rake db:create db:migrate db:seed
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
 > | `200`         | `OK`                     | `Newly created pokemon encoded as JSON`            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
-> | `400`         | `Bad Request`            | `Description of issue` |  `{"name":["has already been taken"]}` |     
+> | `422`         | `Unprocessable Entity`          | `Description of issue` |  `{"name":["has already been taken"]}` |     
 
 
 
@@ -151,7 +151,7 @@ rake db:create db:migrate db:seed
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
 > | `200`         | `OK`                     | `Updated pokemon encoded as JSON`            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
-> | `400`         | `Bad Request`            | `Description of issue` |  `{"hp":["must be less than or equal to 255"]}` |     
+> | `422`         | `Unprocessable Entity`   | `Description of issue` |  `{"hp":["must be less than or equal to 255"]}` |     
 > | `404`         | `Not Found`            |  |  |     
 
 
