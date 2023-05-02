@@ -36,6 +36,16 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     get pokemons_url
     assert JSON.parse(response.body)['data'].length == 25, "paginated index doesn't default to 25 results per page"
     assert JSON.parse(response.body)['meta']['current_page'] == 1, "paginated index doesn't default to page 1"
+
+    get pokemons_url(page: 'one', per_page: 10)
+    assert_response :unprocessable_entity
+    assert JSON.parse(response.body) == { 'page' => ['must be a positive integer'] },
+           "422 isn't sent for invalid pagination params"
+
+    get pokemons_url(page: 1, per_page: -10)
+    assert_response :unprocessable_entity
+    assert JSON.parse(response.body) == { 'per_page' => ['must be a positive integer'] },
+           "422 isn't sent for invalid pagination params"
   end
 
   test 'should create pokemon' do
@@ -72,15 +82,13 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
              "Incorrect value in response body: \"#{view_key} (#{resp[view_key]})\" doesn't match fixture value \"#{model_key}: (#{@pokemon[model_key]})\"."
     end
 
-    # The test environment should raise a RecordNotFound exception here. 
-    # In the development and production environments this exception will be 
+    # The test environment should raise a RecordNotFound exception here.
+    # In the development and production environments this exception will be
     # caught and converted to a 404 response
-    assert_raise(ActiveRecord::RecordNotFound, "Doesn't return 404 Not Found for invalid id"
-) do
+    assert_raise(ActiveRecord::RecordNotFound, "Doesn't return 404 Not Found for invalid id") do
       get '/pokemons/0'
       assert_response :not_found
     end
-
   end
 
   test "should send 304 not modified if index response hasn't changed" do

@@ -5,6 +5,14 @@ class PokemonsController < ApplicationController
 
   # GET /pokemons
   def index
+    # validate pagination params
+    errors = {}
+    %i[page per_page].each do |p|
+      errors[p] = ['must be a positive integer'] if params[p].present? && !params[p].to_i.positive?
+    end
+    # build an error message with the same format as other parameter validation errors in the app
+    render json: errors, status: :unprocessable_entity if errors.present?
+
     @pokemons = \
       Pokemon
       .all

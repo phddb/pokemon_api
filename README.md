@@ -41,7 +41,10 @@ rake db:create db:migrate db:seed
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
 > | `200`         | `OK`                     | Array of json-encoded pokemons plus pagination metadata  |  `{"meta":{"current_page":1,"total_pages":32},"data":[{"Name":"Bulbasaur","Types":["Grass","Poison"],"Total":318,...`  |
-                       
+> | `422`         | `Unprocessable Entity`          | `Description of issue` |  `{"page"=>["must be a positive integer"]}` |     
+
+
+
 
 ##### Example cURL
 

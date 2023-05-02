@@ -10,8 +10,7 @@ class Pokemon < ApplicationRecord
   validates :sp_def,    presence: true, numericality: { only_integer: true, in: 1..255 }
   validates :speed,     presence: true, numericality: { only_integer: true, in: 1..255 }
 
-  validates :legendary, presence: true, inclusion: { in: [true, false] }
-  validates :generation,presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :generation, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
   validates :types,
             presence: true,
@@ -19,6 +18,7 @@ class Pokemon < ApplicationRecord
                                 Ground Fairy Fighting Psychic Rock Steel Ice Ghost Dark] },
             length: 1..2
 
+  validates :legendary, inclusion: { in: [true, false] }
   validate :uniqueness_of_types
 
   # types is an array of strings. It will be serialized to YAML by default
