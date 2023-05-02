@@ -24,5 +24,4 @@ class ApplicationController < ActionController::API
   #     --data-urlencode 'name=bulbasaur2'
 
   wrap_parameters format: %i[json xml url_encoded_form multipart_form]
-
 end

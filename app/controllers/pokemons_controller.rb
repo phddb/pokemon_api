@@ -11,7 +11,7 @@ class PokemonsController < ApplicationController
       errors[p] = ['must be a positive integer'] if params[p].present? && !params[p].to_i.positive?
     end
     # build an error message with the same format as other parameter validation errors in the app
-    render json: errors, status: :unprocessable_entity if errors.present?
+    render json: errors, status: :unprocessable_entity and return if errors.present?
 
     @pokemons = \
       Pokemon
@@ -19,12 +19,20 @@ class PokemonsController < ApplicationController
       .page(params[:page]) # pagination functions from Kaminari gem
       .per(params[:per_page])
 
-    # At the moment we're returning "meta" info about pagination (current page, total pages)
-    #  in the response body (rendered in views/pokemons/index.json.jbuilder).
-    #  Alternatively, we could also return it in the response headers like so:
+    #  Current the app returns "meta" info about pagination (current page, total pages)
+    #  in the response body.
+    #  Alternatively, we could also return it in headers like so:
 
     # response.headers['X-Current-Page'] = query.current_page
     # response.headers['X-Total-Pages'] = query.total_pages
+
+    # Also, though the app currently only responds in JSON, we could add support for other response types with
+    # the block below and a few other minor modifications elsewhere.
+    #
+    # respond_to do |format|
+    #   format.json { render :index, status: :ok }
+    #   format.xml  { render xml: @pokemons.map(&:attributes).to_xml }
+    # end
   end
 
   # GET /pokemons/1
