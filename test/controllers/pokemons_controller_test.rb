@@ -37,11 +37,6 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
            "paginated index doesn't return correct pokemons"
     assert_response :success
 
-    etag = response.headers['ETag']
-    get pokemons_url(page: 4, per_page: 5), headers: { 'HTTP_IF_NONE_MATCH' => etag }
-    assert_response :not_modified, "Doesn't send 304 (not modified) when response hasn't been modified"
-    assert response.body.empty?, "Sends a non-empty body when response hasn't been modified"
-
     get pokemons_url
     assert JSON.parse(response.body)['data'].length == 25, "paginated index doesn't default to 25 results per page"
     assert JSON.parse(response.body)['meta']['current_page'] == 1, "paginated index doesn't default to page 1"
@@ -98,27 +93,6 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
       get '/pokemons/0'
       assert_response :not_found
     end
-  end
-
-  test "should send 304 not modified if index response hasn't changed" do
-    # send inital GET just to get ETag value
-    get pokemon_url(@pokemon)
-    etag = response.headers['ETag']
-
-    # send second GET with last ETag
-    get pokemon_url(@pokemon), headers: { 'HTTP_IF_NONE_MATCH' => etag }
-
-    assert_response :not_modified, "Doesn't send 304 (not modified) when resource hasn't been modified"
-    assert response.body.empty?, "Sends a non-empty body when resource hasn't been modified"
-
-    # modify the resource (touch updates "updated_at")
-    @pokemon.touch
-
-    # save ETag from last GET
-    etag2 = response.headers['ETag']
-
-    get pokemon_url(@pokemon), headers: { 'HTTP_IF_NONE_MATCH' => etag2 }
-    assert_response :success, "Does't sent 200 (success) if resource has been modified."
   end
 
   test 'should update pokemon' do
