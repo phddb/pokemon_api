@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+
+#
+# NOTE: These tests aim primarily to verify the behaviours discussed in the documentation (README.md).
+#       They're probably excessive in many cases, especially when the behaviours are provided by gems with 
+#       their own test suites. Nonetheless, a thorough test of documented behaviours like this might come in
+#       handy in the future if the underlying implementations of these behaviours is ever changed.
+#
+
+
 require 'test_helper'
 
 class PokemonsControllerTest < ActionDispatch::IntegrationTest
