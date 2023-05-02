@@ -16,34 +16,31 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
       Pokemon.create @pokemon_hash.merge({ name: i, id: i })
     end
 
-    get pokemons_url(page: 1, per_page: 10), as: :json
-    assert JSON.parse(response.body)["data"].length == 10, "paginated index doesn't return right number of pokemons"
-    assert JSON.parse(response.body)["data"].pluck('id') == (1..10).to_a, "paginated index doesn't return correct pokemons"
+    get pokemons_url(page: 1, per_page: 10)
+    assert JSON.parse(response.body)['data'].length == 10, "paginated index doesn't return right number of pokemons"
+    assert JSON.parse(response.body)['data'].pluck('id') == (1..10).to_a,
+           "paginated index doesn't return correct pokemons"
     assert_response :success
 
-    get pokemons_url(page: 4, per_page: 5), as: :json
-    assert JSON.parse(response.body)["data"].length == 5, "paginated index doesn't return right number of pokemons"
-    assert JSON.parse(response.body)["data"].pluck('id') == [16, 17, 18, 19, 20],
+    get pokemons_url(page: 4, per_page: 5)
+    assert JSON.parse(response.body)['data'].length == 5, "paginated index doesn't return right number of pokemons"
+    assert JSON.parse(response.body)['data'].pluck('id') == [16, 17, 18, 19, 20],
            "paginated index doesn't return correct pokemons"
     assert_response :success
 
     etag = response.headers['ETag']
-    get pokemons_url(page: 4, per_page: 5), headers: { 'HTTP_IF_NONE_MATCH' => etag }, as: :json
+    get pokemons_url(page: 4, per_page: 5), headers: { 'HTTP_IF_NONE_MATCH' => etag }
     assert_response :not_modified, "Doesn't send 304 (not modified) when response hasn't been modified"
     assert response.body.empty?, "Sends a non-empty body when response hasn't been modified"
 
     get pokemons_url
-    assert JSON.parse(response.body)["data"].length == 25, "paginated index doesn't default to 25 results per page"
-    assert JSON.parse(response.body)["meta"]["current_page"] == 1, "paginated index doesn't default to page 1"
-
-
-
+    assert JSON.parse(response.body)['data'].length == 25, "paginated index doesn't default to 25 results per page"
+    assert JSON.parse(response.body)['meta']['current_page'] == 1, "paginated index doesn't default to page 1"
   end
-
 
   test 'should create pokemon' do
     assert_difference('Pokemon.count') do
-      p = post pokemons_url, params: @pokemon_hash, as: :json
+      p = post pokemons_url, params: @pokemon_hash
     end
 
     assert_response :created
@@ -64,7 +61,7 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should show pokemon' do
-    get pokemon_url(@pokemon), as: :json
+    get pokemon_url(@pokemon)
 
     assert_response :success
 
@@ -79,14 +76,13 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     # assert_response :not_found, "Doesn't return 404 Not Found for invalid id"
   end
 
-
   test "should send 304 not modified if index response hasn't changed" do
     # send inital GET just to get ETag value
-    get pokemon_url(@pokemon), as: :json
+    get pokemon_url(@pokemon)
     etag = response.headers['ETag']
 
     # send second GET with last ETag
-    get pokemon_url(@pokemon), headers: { 'HTTP_IF_NONE_MATCH' => etag }, as: :json
+    get pokemon_url(@pokemon), headers: { 'HTTP_IF_NONE_MATCH' => etag }
 
     assert_response :not_modified, "Doesn't send 304 (not modified) when resource hasn't been modified"
     assert response.body.empty?, "Sends a non-empty body when resource hasn't been modified"
@@ -97,15 +93,18 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
     # save ETag from last GET
     etag2 = response.headers['ETag']
 
-    get pokemon_url(@pokemon), headers: { 'HTTP_IF_NONE_MATCH' => etag2 }, as: :json
+    get pokemon_url(@pokemon), headers: { 'HTTP_IF_NONE_MATCH' => etag2 }
     assert_response :success, "Does't sent 200 (success) if resource has been modified."
   end
-
-
 
   test 'should update pokemon' do
     update_values = { name: 'test2', types: ['Grass'], hp: 2, attack: 2, defense: 2, sp_atk: 2, sp_def: 2, speed: 2,
                       generation: 2, legendary: true }
+
+    %i[json xml url_encoded_form multipart_form].each do |mimetype|
+      patch pokemon_url(@pokemon), params: update_values, as: mimetype
+      assert :success, "Updated failed when params were sent encoded as #{mimetype}"
+    end
 
     # independently update each attribute, check that result in correctly persisted to database
     update_values.each_key do |attribute_to_update|
@@ -117,7 +116,7 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
       pre_patch_hash = pre_patch.as_json
 
       # send request to modify a single attribute
-      patch pokemon_url(pre_patch), params: update_values.slice(attribute_to_update), as: :json
+      patch pokemon_url(pre_patch), params: update_values.slice(attribute_to_update)
 
       assert_response :success
 
@@ -139,7 +138,7 @@ class PokemonsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should destroy pokemon' do
     assert_difference('Pokemon.count', -1) do
-      delete pokemon_url(@pokemon), as: :json
+      delete pokemon_url(@pokemon)
     end
 
     assert_response :no_content

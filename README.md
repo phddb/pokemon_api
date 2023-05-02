@@ -159,7 +159,7 @@ rake db:create db:migrate db:seed
 ##### Example cURL
 
 > ```javascript
->   curl -X PATCH 'localhost:3000/pokemons/1' -H 'Content-Type: application/json' -d '{"hp": 45}'
+>   curl -X PATCH 'localhost:3000/pokemons/1' -d 'hp=45'
 > ```
 
 </details>
