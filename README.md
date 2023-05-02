@@ -41,7 +41,7 @@ rake db:create db:migrate db:seed
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
 > | `200`         | `OK`                     | Array of json-encoded pokemons plus pagination metadata  |  `{"meta":{"current_page":1,"total_pages":32},"data":[{"Name":"Bulbasaur","Types":["Grass","Poison"],"Total":318,...`  |
-> | `422`         | `Unprocessable Entity`          | `Description of issue` |  `{"page"=>["must be a positive integer"]}` |     
+> | `422`         | `Unprocessable Entity`          | Description of issue |  `{"page"=>["must be a positive integer"]}` |     
 
 
 
@@ -81,8 +81,8 @@ rake db:create db:migrate db:seed
 
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
-> | `200`         | `OK`                     | `Newly created pokemon encoded as JSON`            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
-> | `422`         | `Unprocessable Entity`          | `Description of issue` |  `{"name":["has already been taken"]}` |     
+> | `200`         | `OK`                     | Newly created pokemon encoded in JSON            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
+> | `422`         | `Unprocessable Entity`          | Description of issue |  `{"name":["has already been taken"]}` |     
 
 
 
@@ -111,7 +111,7 @@ rake db:create db:migrate db:seed
 
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
-> | `200`         | `OK`                     | `Pokemon encoded as JSON`            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
+> | `200`         | `OK`                     | Pokemon encoded as JSON            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
 > | `404`         | `Not Found`            |  |  |     
 
 
@@ -153,8 +153,8 @@ rake db:create db:migrate db:seed
 
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
-> | `200`         | `OK`                     | `Updated pokemon encoded as JSON`            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
-> | `422`         | `Unprocessable Entity`   | `Description of issue` |  `{"hp":["must be less than or equal to 255"]}` |     
+> | `200`         | `OK`                     | Updated pokemon encoded as JSON            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
+> | `422`         | `Unprocessable Entity`   | Description of issue |  `{"hp":["must be less than or equal to 255"]}` |     
 > | `404`         | `Not Found`            |  |  |     
 
 
@@ -197,3 +197,12 @@ rake db:create db:migrate db:seed
 </details>
 
 
+
+
+## TODO 
+
+To be used in production, especially with sensitive data, this app would probably need a few additional features. At a minimum
+- Authentication (e.g. with [Devise](https://github.com/heartcombo/devise))
+- Authorization ([CanCanCan](https://github.com/CanCanCommunity/cancancan))
+- [HTTPS](https://api.rubyonrails.org/classes/ActionDispatch/SSL.html)
+- Rate limiting ([Rack::Attack](https://github.com/rack/rack-attack))
