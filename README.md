@@ -41,9 +41,10 @@ rake db:create db:migrate db:seed
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
 > | `200`         | `OK`                     | Array of json-encoded pokemons plus pagination metadata  |  `{"meta":{"current_page":1,"total_pages":32},"data":[{"Name":"Bulbasaur","Types":["Grass","Poison"],"Total":318,...`  |
-> | `304`         | `Not Modified` (*)          |  |   |    
+> | `304`         | `Not Modified`           |  | Note: requires sending appropriate headers.<br>See [example](test/controllers/pokemons_controller_not_modified_test.rb).  |    
 > | `422`         | `Unprocessable Entity`          | Description of issue |  `{"page"=>["must be a positive integer"]}` |     
-(*) Requires sending appropriate headers. See [example](test/controllers/pokemons_controller_not_modified_test.rb).
+
+
 
 
 
@@ -113,6 +114,7 @@ rake db:create db:migrate db:seed
 > | http code     | description              | response body                                      | example |
 > |---------------|--------------------------|----------------------------------------------------|-----------------------------|
 > | `200`         | `OK`                     | Pokemon encoded as JSON            | `{"Name":"Bulbasaur2","Types":["Grass","Poison"],"Total":318,...` |
+> | `304`         | `Not Modified`           |  | Note: requires sending appropriate headers.<br> See [example](test/controllers/pokemons_controller_not_modified_test.rb).  |    
 > | `404`         | `Not Found`            |  |  |     
 
 
