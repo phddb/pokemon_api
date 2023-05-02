@@ -5,11 +5,10 @@ class PokemonsController < ApplicationController
 
   # GET /pokemons
   def index
-
     @pokemons = \
       Pokemon
       .all
-      .page(params[:page])      # pagination functions from Kaminari gem
+      .page(params[:page]) # pagination functions from Kaminari gem
       .per(params[:per_page])
 
     # At the moment we're returning "meta" info about pagination (current page, total pages)
@@ -18,7 +17,6 @@ class PokemonsController < ApplicationController
 
     # response.headers['X-Current-Page'] = query.current_page
     # response.headers['X-Total-Pages'] = query.total_pages
-
   end
 
   # GET /pokemons/1
@@ -57,11 +55,11 @@ class PokemonsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def params_for_create
-    params.require(:pokemon).permit(:name, :hp, :attack, :defense, :sp_atk, :sp_def, :speed, :generation, :legendary, types: [])
+    params.require(:pokemon).permit(:name, :hp, :attack, :defense, :sp_atk, :sp_def, :speed, :generation, :legendary,
+                                    types: [])
   end
 
   def params_for_update
     params_for_create
   end
-
 end

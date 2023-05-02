@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,21 +12,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_26_192748) do
-  create_table "pokemons", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "types", default: "--- []\n", null: false
-    t.integer "hp", null: false
-    t.integer "attack", null: false
-    t.integer "defense", null: false
-    t.integer "sp_atk", null: false
-    t.integer "sp_def", null: false
-    t.integer "speed", null: false
-    t.integer "generation", null: false
-    t.boolean "legendary", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_pokemons_on_name", unique: true
+ActiveRecord::Schema[7.0].define(version: 20_230_426_192_748) do
+  create_table 'pokemons', force: :cascade do |t|
+    t.string 'name', null: false
+    t.string 'types', default: "--- []\n", null: false
+    t.integer 'hp', null: false
+    t.integer 'attack', null: false
+    t.integer 'defense', null: false
+    t.integer 'sp_atk', null: false
+    t.integer 'sp_def', null: false
+    t.integer 'speed', null: false
+    t.integer 'generation', null: false
+    t.boolean 'legendary', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['name'], name: 'index_pokemons_on_name', unique: true
   end
-
 end
