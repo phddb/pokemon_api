@@ -37,10 +37,6 @@ class Pokemon < ApplicationRecord
 
   private
 
-  def calculate_total
-    self.total = hp + attack + defense + sp_atk + sp_def + speed
-  end
-
   def uniqueness_of_types
     errors.add(:types, 'must not contain duplicates') unless types.length == types.uniq.length
   end
