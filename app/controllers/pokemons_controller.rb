@@ -2,16 +2,10 @@
 
 class PokemonsController < ApplicationController
   before_action :set_pokemon, only: %i[show update destroy]
+  before_action :validate_pagination_params, only: :index
 
   # GET /pokemons
   def index
-    # validate pagination params
-    errors = {}
-    %i[page per_page].each do |p|
-      errors[p] = ['must be a positive integer'] if params[p].present? && !params[p].to_i.positive?
-    end
-    # build an error message with the same format as other parameter validation errors in the app
-    render json: errors, status: :unprocessable_entity and return if errors.present?
 
     @pokemons = \
       Pokemon
@@ -69,6 +63,16 @@ class PokemonsController < ApplicationController
     @pokemon = Pokemon.find(params[:id])
   end
 
+  def validate_pagination_params
+
+    errors = {}
+    %i[page per_page].each do |p|
+      errors[p] = ['must be a positive integer'] if params[p].present? && !params[p].to_i.positive?
+    end
+    render json: errors, status: :unprocessable_entity if errors.present?
+
+  end
+  
   # Only allow a list of trusted parameters through.
   def params_for_create
     params.require(:pokemon).permit(:name, :hp, :attack, :defense, :sp_atk, :sp_def, :speed, :generation, :legendary,
