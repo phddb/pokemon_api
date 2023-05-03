@@ -32,4 +32,5 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
+# mac-specific file display info
 **/.DS_Store
