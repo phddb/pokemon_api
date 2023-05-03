@@ -3,6 +3,8 @@
 class Pokemon < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
+  # pokemon "stats" appear to have a range from 1-255, so apply this contstraint to our records
+  # (https://bulbapedia.bulbagarden.net/wiki/Base_stats#In_the_core_series)
   validates :hp,        presence: true, numericality: { only_integer: true, in: 1..255 }
   validates :attack,    presence: true, numericality: { only_integer: true, in: 1..255 }
   validates :defense,   presence: true, numericality: { only_integer: true, in: 1..255 }
